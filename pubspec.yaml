@@ -1,6 +1,6 @@
 name: flutter_table
-description: Advanced two-dimensional Flutter table with sticky headers, lazy rows, sorting, column resizing, selection, zebra/grid styling, scroll shadows and programmatic scrolling. Works on Android, iOS, web, macOS, Windows and Linux.
-version: 2.0.0
+description: Advanced Flutter table with sticky headers, lazy rows, sorting, search, selection, resizable columns and 13 themes. Android, iOS, web, macOS, Windows, Linux.
+version: 2.0.1
 homepage: https://github.com/seena98/sticky-headers-table
 repository: https://github.com/seena98/sticky-headers-table
 issue_tracker: https://github.com/seena98/sticky-headers-table/issues

@@ -1,3 +1,7 @@
+## 2.0.1
+
+* Shortened the pubspec description to meet pub.dev's 60-180 character guideline.
+
 ## 2.0.0
 
 Complete rewrite on top of the 1.x builder API.
