@@ -8,7 +8,7 @@
 <p align="center">
   <img alt="platforms" src="https://img.shields.io/badge/platforms-Android%20%7C%20iOS%20%7C%20Web%20%7C%20macOS%20%7C%20Windows%20%7C%20Linux-blue">
   <img alt="flutter" src="https://img.shields.io/badge/Flutter-%E2%89%A5%203.27-02569B?logo=flutter">
-  <img alt="license" src="https://img.shields.io/badge/license-MIT-green">
+  <img alt="license" src="https://img.shields.io/badge/license-BSD-green">
 </p>
 
 <p align="center">
@@ -203,5 +203,9 @@ infinite scroll.
 
 ## Credits
 
-Originally forked from
-[Alex Bacich's sticky-headers-table](https://github.com/AlexBacich/sticky-headers-table).
+This package is a fork of
+[Alex Bacich's sticky-headers-table](https://github.com/AlexBacich/sticky-headers-table)
+(itself derived from `table_sticky_headers`), maintained by
+[seena98](https://github.com/seena98). The original project is no longer
+updated, so this fork modernizes it and adds many new features. Thanks to
+Alex Bacich and the original contributors.
