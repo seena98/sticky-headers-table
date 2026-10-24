@@ -22,8 +22,8 @@ class CellDimensions {
 
     /// Sticky legend height. Also applied to sticky row height.
     required this.stickyLegendHeight,
-  })  : this.columnWidths = null,
-        this.rowHeights = null;
+  })  : columnWidths = null,
+        rowHeights = null;
 
   /// Same dimensions for each cell.
   const CellDimensions.uniform({
@@ -50,8 +50,8 @@ class CellDimensions {
 
     /// Sticky legend height. Also applied to sticky row height.
     required this.stickyLegendHeight,
-  })  : this.columnWidths = null,
-        this.rowHeights = null;
+  })  : columnWidths = null,
+        rowHeights = null;
 
   /// Different width for each column.
   const CellDimensions.variableColumnWidth({
@@ -67,8 +67,8 @@ class CellDimensions {
 
     /// Sticky legend height. Also applied to sticky row height.
     required this.stickyLegendHeight,
-  })  : this.contentCellWidth = null,
-        this.rowHeights = null;
+  })  : contentCellWidth = null,
+        rowHeights = null;
 
   /// Different height for each row.
   const CellDimensions.variableRowHeight({
@@ -84,8 +84,8 @@ class CellDimensions {
 
     /// Sticky legend height. Also applied to sticky row height.
     required this.stickyLegendHeight,
-  })  : this.columnWidths = null,
-        this.contentCellHeight = null;
+  })  : columnWidths = null,
+        contentCellHeight = null;
 
   /// Different width for each column and different height for each row.
   const CellDimensions.variableColumnWidthAndRowHeight({
@@ -102,8 +102,8 @@ class CellDimensions {
 
     /// Sticky legend height. Also applied to sticky row height.
     required this.stickyLegendHeight,
-  })  : this.contentCellWidth = null,
-        this.contentCellHeight = null;
+  })  : contentCellWidth = null,
+        contentCellHeight = null;
 
   final double? contentCellWidth;
   final double? contentCellHeight;

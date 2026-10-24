@@ -1,10 +1,19 @@
 name: flutter_table
-description: Two-dimension table with both sticky headers. You may scroll left \ right and top \ bottom. Sticky headers always stay visible. Legend cell (top left) always visible too.
-version: 1.1.0
+description: Advanced two-dimensional Flutter table with sticky headers, lazy rows, sorting, column resizing, selection, zebra/grid styling, scroll shadows and programmatic scrolling. Works on Android, iOS, web, macOS, Windows and Linux.
+version: 2.0.0
 homepage: https://github.com/seena98/sticky-headers-table
+repository: https://github.com/seena98/sticky-headers-table
+issue_tracker: https://github.com/seena98/sticky-headers-table/issues
+topics:
+  - table
+  - datatable
+  - sticky-header
+  - grid
+  - widget
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: ^3.5.0
+  flutter: '>=3.27.0'
 
 dependencies:
   flutter:
@@ -13,6 +22,12 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^5.0.0
 
-flutter:
-
+platforms:
+  android:
+  ios:
+  linux:
+  macos:
+  web:
+  windows:

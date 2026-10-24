@@ -1,103 +1,207 @@
-# table_sticky_headers
+<h1 align="center">flutter_table</h1>
 
-This Package is a fork from [Alex Bacich](https://github.com/AlexBacich/sticky-headers-table). 
-I Fixed it's bugs cause it's main contributors haven't fixed them.
+<p align="center">
+  <b>The two-dimensional table for Flutter.</b><br>
+  Sticky headers · lazy rows · sorting · search · selection · resizable columns · 13 ready-made themes
+</p>
 
-This package for [Flutter](https://flutter.io) allows you to display two-dimension table with both sticky headers.
+<p align="center">
+  <img alt="platforms" src="https://img.shields.io/badge/platforms-Android%20%7C%20iOS%20%7C%20Web%20%7C%20macOS%20%7C%20Windows%20%7C%20Linux-blue">
+  <img alt="flutter" src="https://img.shields.io/badge/Flutter-%E2%89%A5%203.27-02569B?logo=flutter">
+  <img alt="license" src="https://img.shields.io/badge/license-MIT-green">
+</p>
 
-Key of this package is sticky headers. You can scroll table any direction and headers (top and left) will always stay. 
-Cells themselves are fully customizable as you can fill them with Widgets. 
+<p align="center">
+  <img src="doc/screenshots/ocean.png" width="49%" alt="Ocean theme">
+  <img src="doc/screenshots/midnight.png" width="49%" alt="Midnight theme">
+</p>
 
-To work with table you need to fill it with data. It has three builders for generating title column (List<Widget>), title row (List<Widget>) and content itself (List<Widget>.
+Scroll in any direction – the top row, the left column and the legend corner
+always stay in view. Pick the level you need:
 
-Simplest UseCase. You have two-dimensional array of Strings. Builder takes value from array and generates Text widget: 
-```dart
-contentCellBuilder: (i, j) => Text(data[i][j]),
+| You have…                       | Use                                   | Lines of code |
+| ------------------------------- | ------------------------------------- | ------------- |
+| A list of your own objects      | [`StickyDataTable<T>`](#smart-table)  | ~8            |
+| Strings in a 2-D list           | [`StickyHeadersTable.text`](#from-strings) | ~5       |
+| Fully custom cell widgets       | [`StickyHeadersTable`](#full-control-builders) | ~12  |
+
+## Install
+
+```yaml
+dependencies:
+  flutter_table:
+    git:
+      url: https://github.com/seena98/sticky-headers-table
 ```
 
-For more advanced usage - decorate Text with other widgets like borders, cell colors, etc. Check decorated_example.dart to see it in action.
-You can also wrap cell with tap listeners and add custom behavior on tap. Check tap_handler_example.dart.
+```dart
+import 'package:flutter_table/table_sticky_headers.dart';
+```
 
-The cell dimensions can be customized using the cellDimensions property of StickyHeadersTable. Use:
-- CellDimensions.base: Default fixed values.
-- CellDimensions.uniform: Same dimensions for each cell.
-- CellDimensions.fixed: Custom fixed width and height for each content cell.
-- CellDimensions.variableColumnWidth: Different width for each column.
-- CellDimensions.variableRowHeight: Different height for each row.
-- CellDimensions.variableColumnWidthAndRowHeight: Different width for each column and different height for each row.
+Works on **Android, iOS, web, macOS, Windows and Linux**. Touch, mouse,
+trackpad and stylus can all drag-scroll; scrollbars are optional.
 
-The alignment of the cell contents can be customized using the cellAlignments property of StickyHeadersTable. Use:
-- CellAlignments.base: Default alignment value (Alignment.center).
-- CellAlignments.uniform: Same alignment for each cell.
-- CellAlignments.fixed: Same alignment for each content cell, but different alignment for the sticky column, row and legend.
-- CellAlignments.variableColumnAlignment: Different alignment for each column.
-- CellAlignments.variableRowAlignment: Different alignment for each row.
-- CellAlignments.variable: Different alignment for every cell.
+## Smart table
 
-You can provide functions that execute when tapping a cell by setting the properties:
-- onStickyLegendPressed: () => print('Sticky legend pressed.'),
-- onColumnTitlePressed: (i) => print('Column $i title pressed.'),
-- onRowTitlePressed: (j) => print('Row $j title pressed.'),
-- onContentCellPressed: (i, j) => print('Cell at column $i, row $j pressed.'),
-
-The initial scroll offset of the table in the x and y directions can be set by using the properties:
-- initialScrollOffsetX
-- initialScrollOffsetY
-
-You can also set a callback for when the scrolling ends by setting the onEndScrolling property.
-
-By combining the two above features, you can return to the previous scroll position after a rebuild. See example below:
+Give it rows and columns – sorting, search, selection and column widths are
+handled for you.
 
 ```dart
-double _scrollOffsetX = 0.0;
-double _scrollOffsetY = 0.0;
-
-StickyHeadersTable(
-  // ... other properties ...
-  initialScrollOffsetX: _scrollOffsetX,
-  initialScrollOffsetY: _scrollOffsetY,
-  onEndScrolling: (scrollOffsetX, scrollOffsetY) {
-    _scrollOffsetX = scrollOffsetX;
-    _scrollOffsetY = scrollOffsetY;
-  },
+StickyDataTable<Employee>(
+  rows: employees,
+  columns: [
+    StickyColumn(title: 'Name',   value: (e) => e.name),
+    StickyColumn(title: 'Salary', value: (e) => e.salary, format: (v) => '\$$v'),
+    StickyColumn(title: 'Joined', value: (e) => e.joined),
+    StickyColumn(
+      title: 'Role',
+      value: (e) => e.role,
+      cell: (context, e) => RoleBadge(e.role),   // any widget
+    ),
+  ],
+  style: StickyTableStyle.ocean,
+  searchQuery: query,          // live filter across all columns
+  initialSortColumn: 0,
+  selectable: true,
+  onSelectionChanged: (rows) => setState(() => selected = rows),
 )
 ```
 
-You can also define a custom set of scroll controllers for both title and body with the ```scrollControllers``` property
-  
-Feature requests and PRs are welcome.  
+* Tap a header to sort; numbers, text, dates and bools sort naturally
+  (or pass `compare:`).
+* Numbers are right-aligned automatically, widths are measured from the
+  content, and columns stretch to fill wide screens (`stretchToFit`).
+* `hiddenColumns: {2}` hides columns – build a column picker in a few lines.
+* `stickyTableToCsv(columns, rows)` exports what you show.
 
-![Examples](https://github.com/seena98/sticky-headers-table/blob/master/example/sticky_demo.gif?raw=true)
+## From strings
 
-Widget usage example:
 ```dart
-// titleColumn - List<String> (title column)
-// titleColumn - List<String> (title row)
-// titleColumn - List<List<String>> (data)
-
-StickyHeadersTable(
-          columnsLength: titleColumn.length,
-          rowsLength: titleRow.length,
-          columnsTitleBuilder: (i) => Text(titleColumn[i]),
-          rowsTitleBuilder: (i) => Text(titleRow[i]),
-          contentCellBuilder: (i, j) => Text(data[i][j]),
-          legendCell: Text('Sticky Legend'),
-        ),
+StickyHeadersTable.text(
+  columnTitles: ['Name', 'Age'],
+  rowTitles: ['#1', '#2'],
+  data: [['Ann', '31'], ['Bob', '27']],
+  style: StickyTableStyle.minimal,
+)
 ```
 
-Visit examples to see it in details
+## Full control (builders)
 
-## Support
+```dart
+StickyHeadersTable(
+  columnsLength: 20,
+  rowsLength: 10000,                       // rows are built lazily
+  columnsTitleBuilder: (j) => Text('Col $j'),
+  rowsTitleBuilder: (i) => Text('Row $i'),
+  contentCellBuilder: (j, i) => Text('$i, $j'),
+  legendCell: const Text('Legend'),
+  cellDimensions: CellDimensions.variableColumnWidth(
+    columnWidths: widths, contentCellHeight: 48,
+    stickyLegendWidth: 80, stickyLegendHeight: 52,
+  ),
+  cellAlignments: CellAlignments.uniform(Alignment.centerLeft),
+)
+```
 
-Please file [issues and feature requests](https://github.com/seena98/sticky-headers-table).
+## Themes
 
-## Getting Started
+Every theme is a `const StickyTableStyle`. Use `StickyTableStyle.presets` for a
+picker, or `StickyTableStyle.material(context)` to follow your app's
+`ColorScheme`. Tweak any preset with `copyWith`.
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
+| | | |
+|:--:|:--:|:--:|
+| <img src="doc/screenshots/minimal.png"> **minimal** | <img src="doc/screenshots/ocean.png"> **ocean** | <img src="doc/screenshots/midnight.png"> **midnight** |
+| <img src="doc/screenshots/sunset.png"> **sunset** | <img src="doc/screenshots/forest.png"> **forest** | <img src="doc/screenshots/rose.png"> **rose** |
+| <img src="doc/screenshots/ledger.png"> **ledger** | <img src="doc/screenshots/slate.png"> **slate** | <img src="doc/screenshots/mint.png"> **mint** |
+| <img src="doc/screenshots/lavender.png"> **lavender** | <img src="doc/screenshots/coffee.png"> **coffee** | <img src="doc/screenshots/neon.png"> **neon** |
+| <img src="doc/screenshots/contrast.png"> **contrast** | | |
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+Build your own:
+
+```dart
+const StickyTableStyle(
+  headerColor: Color(0xFF1E2233),
+  stripeColor: Color(0xFF181B2A),     // zebra rows
+  hoverRowColor: Color(0xFF222640),   // mouse hover
+  selectedRowColor: Color(0xFF2E3566),
+  gridLineColor: Color(0xFF262A40),
+  showScrollShadows: true,            // shadow appears under pinned headers
+  headerTextStyle: TextStyle(fontWeight: FontWeight.w700),
+)
+```
+
+## Everything `StickyHeadersTable` can do
+
+| Feature | API |
+| --- | --- |
+| Lazy rows (10 000+ fine) | automatic |
+| Fixed / per-column / per-row sizes | `CellDimensions.*` |
+| Per-cell alignment | `CellAlignments.*` |
+| Zebra, grid, hover, selection, scroll shadows | `style: StickyTableStyle(...)` |
+| Selected rows | `selectedRows: {1, 4}` |
+| Tap, double tap, long press, right click | `onContentCellPressed`, `onContentCellDoubleTap`, `onContentCellLongPress`, `onContentCellSecondaryTap` (gives position for context menus) |
+| Header / legend taps | `onColumnTitlePressed`, `onRowTitlePressed`, `onStickyLegendPressed` |
+| Sort arrows | `sortColumnIndex`, `sortAscending`, `onSort`, `isColumnSortable` |
+| Drag-to-resize columns | `resizableColumns`, `minColumnWidth`, `onColumnResized` |
+| Empty & loading states | `emptyBuilder`, `isLoading` |
+| Infinite scroll | `onEndReached`, `endReachedThreshold` |
+| Scroll programmatically | `StickyTableController` |
+| Initial offset / scroll end callback | `initialScrollOffsetX/Y`, `onEndScrolling` |
+| Scrollbars, mouse drag, physics | `showScrollbars`, `enableMouseDrag`, `physics` |
+| Bring your own scroll controllers | `scrollControllers` |
+
+### Controller
+
+```dart
+final controller = StickyTableController();
+
+StickyHeadersTable(controller: controller, ...);
+
+controller.scrollToRow(500, duration: const Duration(milliseconds: 400));
+controller.scrollToColumn(8);
+controller.scrollTo(x: 0, y: 0);
+controller.offsetY;          // current position
+controller.columnWidth(2);   // width after user resizing
+```
+
+### Infinite scroll
+
+```dart
+StickyDataTable<Item>(
+  rows: items,
+  columns: columns,
+  isLoading: loading,
+  onEndReached: loadNextPage,   // fires once per new page
+)
+```
+
+## Migrating from 1.x
+
+The builder API is unchanged. Differences:
+
+* Requires Dart 3.5 / Flutter 3.27+.
+* `onStickyLegendPressed` etc. are now nullable instead of no-op defaults.
+* The initial scroll offset is applied once, not on every rebuild, and the
+  table no longer loses its scroll position when the parent rebuilds.
+* Default scroll controllers are owned and disposed by the table.
+
+## Not included (yet)
+
+Multiple frozen columns/rows, a pinned footer row, merged cells, keyboard
+cell navigation. Issues and PRs welcome.
+
+## Run the example
+
+```sh
+cd example
+flutter run -d chrome   # or macos, windows, linux, an emulator...
+```
+
+The example is a theme gallery with live search, sorting, selection and
+infinite scroll.
+
+## Credits
+
+Originally forked from
+[Alex Bacich's sticky-headers-table](https://github.com/AlexBacich/sticky-headers-table).

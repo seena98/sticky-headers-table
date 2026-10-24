@@ -117,6 +117,7 @@ class CellAlignments {
     } else if (contentCellAlignments != null) {
       return contentCellAlignments![i][j];
     }
+    return null;
   }
 
   Alignment? rowAlignment(int i) {
