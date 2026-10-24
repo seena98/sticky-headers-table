@@ -107,7 +107,6 @@ class StickyHeadersTable extends StatefulWidget {
     /// Allow dragging with mouse / trackpad / stylus, not just touch.
     this.enableMouseDrag = true,
     this.physics,
-    this.cacheExtent,
   }) {
     cellDimensions.runAssertions(rowsLength, columnsLength);
     cellAlignments.runAssertions(rowsLength, columnsLength);
@@ -202,7 +201,6 @@ class StickyHeadersTable extends StatefulWidget {
   final bool showScrollbars;
   final bool enableMouseDrag;
   final ScrollPhysics? physics;
-  final double? cacheExtent;
 
   @override
   State<StickyHeadersTable> createState() => _StickyHeadersTableState();
@@ -616,7 +614,6 @@ class _StickyHeadersTableState extends State<StickyHeadersTable> {
               controller: c.verticalBodyController,
               physics: physics,
               padding: EdgeInsets.zero,
-              cacheExtent: widget.cacheExtent,
               itemCount: widget.rowsLength,
               itemExtentBuilder: (i, _) => _rowHeights[i],
               itemBuilder: (_, i) => _contentRow(i),
@@ -635,7 +632,6 @@ class _StickyHeadersTableState extends State<StickyHeadersTable> {
           controller: c.verticalTitleController,
           physics: physics,
           padding: EdgeInsets.zero,
-          cacheExtent: widget.cacheExtent,
           itemCount: widget.rowsLength,
           itemExtentBuilder: (i, _) => _rowHeights[i],
           itemBuilder: (_, i) => _rowTitle(i),

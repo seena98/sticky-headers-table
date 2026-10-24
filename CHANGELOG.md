@@ -1,3 +1,7 @@
+## 2.0.2
+
+* Removed the `cacheExtent` parameter (deprecated upstream in newer Flutter versions); the framework default is used.
+
 ## 2.0.1
 
 * Shortened the pubspec description to meet pub.dev's 60-180 character guideline.
